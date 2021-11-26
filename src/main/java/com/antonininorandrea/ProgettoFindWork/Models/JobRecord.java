@@ -3,16 +3,16 @@ package com.antonininorandrea.ProgettoFindWork.Models;
 import java.util.LinkedList;
 
 public class JobRecord {
-	private long id;
-	private String location;
-	private boolean remote;
-	private boolean fullTime;
-	private LinkedList<String> languages;
-	private String role;
-	private String link;
-	private LinkedList<String> keywords;
+	private long id; // 'id'
+	private String location; // 'location'; Null se remoto
+	private boolean remote; // 'remote'
+	private boolean fullTime; // 'employment-type'; Null se part-time
+	private String role; // 'role
+	private String link; // 'url'
+	private LinkedList<String> keywords; // 'keywords'
 	
 	
+	// TODO fare costruttore
 	
 	public long getId() {
 		return id;
@@ -41,14 +41,7 @@ public class JobRecord {
 	public void setFullTime(boolean fullTime) {
 		this.fullTime = fullTime;
 	}
-	
-	public LinkedList<String> getLanguages() {
-		return languages;
-	}
-	public void setLanguages(LinkedList<String> languages) {
-		this.languages = languages;
-	}
-	
+		
 	public String getRole() {
 		return role;
 	}
