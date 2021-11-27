@@ -2,12 +2,16 @@ package com.antonininorandrea.ProgettoFindWork.Models;
 
 import java.util.LinkedList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class JobRecord {
 	private long id; // 'id'
 	private String location; // 'location'; Null se remoto
 	private boolean remote; // 'remote'
-	private boolean fullTime; // 'employment-type'; Null se part-time
-	private String role; // 'role
+	private String employment; // 'employment-type'; Null se part-time (o remote?)
+	private String role; // 'role'
 	private String link; // 'url'
 	private LinkedList<String> keywords; // 'keywords'
 	
@@ -35,11 +39,11 @@ public class JobRecord {
 		this.remote = remote;
 	}
 	
-	public boolean isFullTime() {
-		return fullTime;
+	public String getEmployment() {
+		return employment;
 	}
-	public void setFullTime(boolean fullTime) {
-		this.fullTime = fullTime;
+	public void setEmployment(String employment) {
+		this.employment = employment;
 	}
 		
 	public String getRole() {
@@ -61,5 +65,27 @@ public class JobRecord {
 	}
 	public void setKeywords(LinkedList<String> keywords) {
 		this.keywords = keywords;
-	}	
+	}
+	
+	
+	
+	public static JobRecord fromJSON(JSONObject json) throws JSONException {
+		JobRecord record = new JobRecord();
+		
+		JSONArray keywordJSON = json.getJSONArray("keywords");
+		LinkedList<String> keywords = new LinkedList<>();
+		
+		for (int i = 0; i < keywordJSON.length(); ++i)
+			keywords.add(keywordJSON.getString(i));
+		
+		record.setId(json.getLong("id"));
+		record.setLocation(json.getString("location"));
+		record.setRemote(json.getBoolean("remote"));
+		record.setEmployment(json.getString("employment-type"));
+		record.setRole(json.getString("role"));
+		record.setLink(json.getString("url"));
+		record.setKeywords(keywords);
+		
+		return record;
+	}
 }
