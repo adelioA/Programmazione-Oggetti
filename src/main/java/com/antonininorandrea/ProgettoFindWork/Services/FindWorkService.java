@@ -65,5 +65,9 @@ public class FindWorkService {
 		return jobs;
 	}
 	
+	// TODO
+	public LinkedList<JobRecord> filterByLocations(LinkedList<JobRecord> collection, String... locations) { return collection; }
 	
+	// TODO
+	public LinkedList<JobRecord> filterByKeywords(LinkedList<JobRecord> collection, String... keywords) { return collection; }
 }
