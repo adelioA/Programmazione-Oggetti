@@ -59,7 +59,7 @@ public class FindWorkService {
 			}
 			
 		} catch (JSONException e) {
-			throw new JsonParsingException();
+			throw new JsonParsingException(e.getMessage());
 		}
 		
 		return jobs;

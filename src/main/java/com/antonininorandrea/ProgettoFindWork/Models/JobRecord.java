@@ -79,9 +79,20 @@ public class JobRecord {
 			keywords.add(keywordJSON.getString(i));
 		
 		record.setId(json.getLong("id"));
-		record.setLocation(json.getString("location"));
+		
+		if (json.isNull("location"))
+			record.setLocation(null);
+		else
+			record.setLocation(json.getString("location"));
+		
+		
 		record.setRemote(json.getBoolean("remote"));
-		record.setEmployment(json.getString("employment-type"));
+		
+		if (json.isNull("employment_type"))
+			record.setEmployment(null);
+		else
+			record.setEmployment(json.getString("employment_type"));
+		
 		record.setRole(json.getString("role"));
 		record.setLink(json.getString("url"));
 		record.setKeywords(keywords);
