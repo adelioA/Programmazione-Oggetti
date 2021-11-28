@@ -22,7 +22,7 @@ public class FindWorkService {
 	// API_KEY:			cd8319f3089e09bdef7995a5268db2c9fa5d0356
 	
 	// BUG: ottiene solo la prima page
-	private JSONArray getAPIResult(String location) throws JSONException, Unable2ReachAPI {
+	/*private JSONArray getAPIResult(String location) throws JSONException, Unable2ReachAPI {
 		OkHttpClient client = new OkHttpClient.Builder()
 				.build();
 		
@@ -171,5 +171,149 @@ public class FindWorkService {
 		}
 		
 		return filteredCollection;
+	}*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private JSONObject requestURL(String url) throws JSONException, Unable2ReachAPI {
+			OkHttpClient client = new OkHttpClient.Builder()
+					.build();
+			
+			Request request = new Request.Builder()
+					.url(url)
+					.addHeader("Content-Type", "application/json")
+					.addHeader("Authorization", "Token cd8319f3089e09bdef7995a5268db2c9fa5d0356")
+					.get()
+					.build();
+			
+			JSONObject apiResult = null;
+			
+			try {
+				Response response = client.newCall(request).execute();
+				apiResult = new JSONObject(response.body().string());
+			} catch (NullPointerException | IOException e) {
+				throw new Unable2ReachAPI();
+			}
+			
+			return apiResult;
+	}
+	
+	public JSONArray getFullAPIResponse(String startingUrl) throws JSONException, Unable2ReachAPI {
+		JSONArray apiResponse = new JSONArray();
+		
+		JSONObject response = null;
+		JSONArray pageResults = null;
+		
+		do {
+			long millis = System.currentTimeMillis();
+			if (response == null)
+				response = this.requestURL(startingUrl);
+			else
+				response = this.requestURL(response.getString("next"));
+			
+			pageResults = (response.isNull("results")) ? new JSONArray() : response.getJSONArray("results");
+			
+			//System.err.println(pageResults.length());
+			
+			for(int i = 0; i < pageResults.length(); ++i)
+				apiResponse.put(pageResults.getJSONObject(i));
+			
+			millis = System.currentTimeMillis() - millis;
+			System.err.println("REQUEST TIME: " + millis);
+			
+		} while(!response.isNull("next"));
+		
+		return apiResponse;
+	}
+	
+	public JSONArray getFullAPIResponse() throws JSONException, Unable2ReachAPI {
+		RequestBuilder builder = new RequestBuilder();
+		return getFullAPIResponse(builder.build());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static class RequestBuilder {
+		private final String baseLink = "https://findwork.dev/api/jobs/";
+		private String[] keywords = {  };
+		private Boolean remote;
+		private String employement;
+		
+		
+		
+		public RequestBuilder() {
+			this.remote = null;
+			this.employement = "";
+		}
+		
+		public RequestBuilder employement(String type) {
+			if(type.equals("full time") || type.equals("contract"))
+				this.employement = type;
+			return this;
+		}
+		
+		public RequestBuilder remote(boolean remote) {
+			this.remote = remote;
+			return this;
+		}
+		
+		public RequestBuilder keywords(String... keywords) {
+			this.keywords = keywords;
+			return this;
+		}
+		
+		public String build() {
+			String completeLink = this.baseLink + "?";
+			
+			completeLink += "remote=" + ((remote == null) ? "" : remote) + "&";
+			completeLink += "employement_type=" + employement + "&";
+			
+			String keywordsJoin = "";
+			for(String keyword: keywords)
+				keywordsJoin += keyword + "+";
+			
+			completeLink += "search=" + keywordsJoin;
+			
+			return completeLink;
+		}
 	}
 }
