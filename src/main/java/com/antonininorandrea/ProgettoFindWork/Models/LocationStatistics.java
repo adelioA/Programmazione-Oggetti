@@ -1,48 +1,32 @@
 package com.antonininorandrea.ProgettoFindWork.Models;
 
+import java.util.LinkedList;
+
 public class LocationStatistics {
-	private String keyword;
-	private double percentualeKeyword; // [0, 1]
-	private double percentualeRemote; // [0, 1]
-	private double percentualeFullTime; // [0, 1]
+	private String location;
+	private LinkedList<KeywordStatistics> keywordStatistics;
 	
 	
 	
-	public LocationStatistics(String keyword, double percentualeKeyword, double percentualeRemote,
-			double percentualeFullTime) {
-		this.setKeyword(keyword);
-		this.setPercentualeKeyword(percentualeKeyword);
-		this.setPercentualeRemote(percentualeRemote);
-		this.setPercentualeFullTime(percentualeFullTime);
+	public LocationStatistics(String location, LinkedList<KeywordStatistics> keywordStatistics) {
+		this.setLocation(location);
+		this.setKeywordStatistics(keywordStatistics);
 	}
 	
 	
 	
-	public String getKeyword() {
-		return keyword;
+	public String getLocation() {
+		return location;
 	}
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
+	public void setLocation(String location) {
+		this.location = location;
 	}
+	public LinkedList<KeywordStatistics> getKeywordStatistics() {
+		return keywordStatistics;
+	}
+	public void setKeywordStatistics(LinkedList<KeywordStatistics> keywordStatistics) {
+		this.keywordStatistics = keywordStatistics;
+	}
+
 	
-	public double getPercentualeKeyword() {
-		return percentualeKeyword;
-	}
-	public void setPercentualeKeyword(double percentualeKeyword) {
-		this.percentualeKeyword = percentualeKeyword;
-	}
-	
-	public double getPercentualeRemote() {
-		return percentualeRemote;
-	}
-	public void setPercentualeRemote(double percentualeRemote) {
-		this.percentualeRemote = percentualeRemote;
-	}
-	
-	public double getPercentualeFullTime() {
-		return percentualeFullTime;
-	}
-	public void setPercentualeFullTime(double percentualeFullTime) {
-		this.percentualeFullTime = percentualeFullTime;
-	}
 }
