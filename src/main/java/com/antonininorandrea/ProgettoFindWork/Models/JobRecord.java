@@ -76,14 +76,14 @@ public class JobRecord {
 		LinkedList<String> keywords = new LinkedList<>();
 		
 		for (int i = 0; i < keywordJSON.length(); ++i)
-			keywords.add(keywordJSON.getString(i));
+			keywords.add(keywordJSON.getString(i).toLowerCase());
 		
 		record.setId(json.getLong("id"));
 		
 		if (json.isNull("location"))
 			record.setLocation(null);
 		else
-			record.setLocation(json.getString("location"));
+			record.setLocation(json.getString("location").toUpperCase());
 		
 		
 		record.setRemote(json.getBoolean("remote"));
@@ -91,9 +91,9 @@ public class JobRecord {
 		if (json.isNull("employment_type"))
 			record.setEmployment(null);
 		else
-			record.setEmployment(json.getString("employment_type"));
+			record.setEmployment(json.getString("employment_type").toLowerCase());
 		
-		record.setRole(json.getString("role"));
+		record.setRole(json.getString("role").toLowerCase());
 		record.setLink(json.getString("url"));
 		record.setKeywords(keywords);
 		
