@@ -27,7 +27,7 @@ public class FindWorkService {
 				.build();
 		
 		Request request = new Request.Builder()
-				.url("https://findwork.dev/api/jobs/?location=" + location)
+				.url("https://findwork.dev/api/jobs/?page-size=10000&location=" + location)
 				.addHeader("Content-Type", "application/json")
 				.addHeader("Authorization", "Token cd8319f3089e09bdef7995a5268db2c9fa5d0356")
 				.get()
@@ -60,17 +60,17 @@ public class FindWorkService {
 	
 	
 	
-	
+	// TODO fix
 	private JSONArray getFullAPIResult(String location) throws JSONException, Unable2ReachAPI {
 		OkHttpClient client = new OkHttpClient.Builder()
 				.build();
 		
-		String link = "https://findwork.dev/api/jobs/?location=";
+		String link = "https://findwork.dev/api/jobs/?location=" + location;
 		JSONArray apiResult = new JSONArray();
 		
 		do {
 			Request request = new Request.Builder()
-					.url(link + location)
+					.url(link)
 					.addHeader("Content-Type", "application/json")
 					.addHeader("Authorization", "Token cd8319f3089e09bdef7995a5268db2c9fa5d0356")
 					.get()
@@ -79,12 +79,17 @@ public class FindWorkService {
 			
 			try {
 				Response response = client.newCall(request).execute();
+				
 				JSONObject result = new JSONObject(response.body().string());
 				
+				//System.out.println("Page: " + page + "\nRESULT: " + result.isNull("results") + "\nNEXT: " + result.isNull("next") + "\n===================================");
+				
 				// Concateno gli array
-				JSONArray records = result.getJSONArray("results");
+				JSONArray records = (result.isNull("result")) ? new JSONArray() : result.getJSONArray("results");
+				
 				for(int  i = 0; i < records.length(); ++i)
 					apiResult.put(records.getJSONObject(i));
+				System.err.println(apiResult.length() + "\n=================");
 				
 				link = (result.isNull("next")) ? null : result.getString("next");
 			} catch (NullPointerException | IOException e) {
@@ -92,9 +97,10 @@ public class FindWorkService {
 			}
 		} while (link != null);
 		
+		
 		return apiResult;
 	}
-	
+	// TODO fix
 	private JSONArray getFullAPIResult() throws JSONException, Unable2ReachAPI {
 		return this.getFullAPIResult("");
 	}
@@ -108,15 +114,13 @@ public class FindWorkService {
 	
 	
 	
-	// Test nuovo metodo
 	public LinkedList<JobRecord> getAllJobs() throws Unable2ReachAPI, JsonParsingException {
 		LinkedList<JobRecord> jobs = new LinkedList<>();
 		JSONArray records = null;
 		
 		
 		try {
-			//records = this.getAPIResult();
-			records = this.getFullAPIResult();
+			records = this.getAPIResult();
 			
 			for(int i = 0; i < records.length(); ++i) {
 				JSONObject item = records.getJSONObject(i);
@@ -130,7 +134,6 @@ public class FindWorkService {
 		return jobs;
 	}
 	
-	// Test nuovo metodo
 	public LinkedList<JobRecord> getAllJobsByLocations(String... locations) throws Unable2ReachAPI, JsonParsingException {
 		LinkedList<JobRecord> jobs = new LinkedList<>();
 		
@@ -138,7 +141,7 @@ public class FindWorkService {
 		
 		try {
 			for(String location: locations) {
-				records = this.getFullAPIResult(location);
+				records = this.getAPIResult(location);
 				
 				for(int i = 0; i < records.length(); ++i) {
 					JSONObject item = records.getJSONObject(i);
@@ -146,7 +149,6 @@ public class FindWorkService {
 					jobs.add(JobRecord.fromJSON(item));
 				}
 			}
-			
 		} catch (JSONException e) {
 			throw new JsonParsingException(e.getMessage());
 		}
