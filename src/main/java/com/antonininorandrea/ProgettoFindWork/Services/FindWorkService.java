@@ -21,7 +21,8 @@ public class FindWorkService {
 	// HOST:			https://findwork.dev/api/jobs/?location=london&search=react&sort_by=relevance
 	// API_KEY:			cd8319f3089e09bdef7995a5268db2c9fa5d0356
 	
-	public JSONArray getAPIResult(String location) throws JSONException, Unable2ReachAPI {
+	// BUG: ottiene solo la prima page
+	private JSONArray getAPIResult(String location) throws JSONException, Unable2ReachAPI {
 		OkHttpClient client = new OkHttpClient.Builder()
 				.build();
 		
@@ -45,17 +46,77 @@ public class FindWorkService {
 		return apiResult;
 	}
 	
-	public JSONArray getAPIResult() throws JSONException, Unable2ReachAPI {
+	// BUG: ottiene solo la prima page
+	private JSONArray getAPIResult() throws JSONException, Unable2ReachAPI {
 		return getAPIResult("");
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private JSONArray getFullAPIResult(String location) throws JSONException, Unable2ReachAPI {
+		OkHttpClient client = new OkHttpClient.Builder()
+				.build();
+		
+		String link = "https://findwork.dev/api/jobs/?location=";
+		JSONArray apiResult = new JSONArray();
+		
+		do {
+			Request request = new Request.Builder()
+					.url(link + location)
+					.addHeader("Content-Type", "application/json")
+					.addHeader("Authorization", "Token cd8319f3089e09bdef7995a5268db2c9fa5d0356")
+					.get()
+					.build();
+			
+			
+			try {
+				Response response = client.newCall(request).execute();
+				JSONObject result = new JSONObject(response.body().string());
+				
+				// Concateno gli array
+				JSONArray records = result.getJSONArray("results");
+				for(int  i = 0; i < records.length(); ++i)
+					apiResult.put(records.getJSONObject(i));
+				
+				link = (result.isNull("next")) ? null : result.getString("next");
+			} catch (NullPointerException | IOException e) {
+				throw new Unable2ReachAPI();
+			}
+		} while (link != null);
+		
+		return apiResult;
+	}
+	
+	private JSONArray getFullAPIResult() throws JSONException, Unable2ReachAPI {
+		return this.getFullAPIResult("");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// Test nuovo metodo
 	public LinkedList<JobRecord> getAllJobs() throws Unable2ReachAPI, JsonParsingException {
 		LinkedList<JobRecord> jobs = new LinkedList<>();
 		JSONArray records = null;
 		
 		
 		try {
-			records = this.getAPIResult();
+			//records = this.getAPIResult();
+			records = this.getFullAPIResult();
 			
 			for(int i = 0; i < records.length(); ++i) {
 				JSONObject item = records.getJSONObject(i);
@@ -69,15 +130,15 @@ public class FindWorkService {
 		return jobs;
 	}
 	
+	// Test nuovo metodo
 	public LinkedList<JobRecord> getAllJobsByLocations(String... locations) throws Unable2ReachAPI, JsonParsingException {
 		LinkedList<JobRecord> jobs = new LinkedList<>();
 		
 		JSONArray records = null;
 		
 		try {
-			
 			for(String location: locations) {
-				records = this.getAPIResult(location);
+				records = this.getFullAPIResult(location);
 				
 				for(int i = 0; i < records.length(); ++i) {
 					JSONObject item = records.getJSONObject(i);
