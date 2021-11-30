@@ -1,5 +1,6 @@
 package com.antonininorandrea.ProgettoFindWork.Models;
 
+import java.util.Date;
 import java.util.LinkedList;
 
 import org.json.JSONArray;
@@ -13,6 +14,7 @@ public class JobRecord {
 	private String employment; // 'employment-type'; Null se part-time (o remote?)
 	private String role; // 'role'
 	private String link; // 'url'
+	private Date postingDate; // 'date_pusted'
 	private LinkedList<String> keywords; // 'keywords'
 	
 	
@@ -66,6 +68,12 @@ public class JobRecord {
 	public void setKeywords(LinkedList<String> keywords) {
 		this.keywords = keywords;
 	}
+	public Date getPostingDate() {
+		return postingDate;
+	}
+	public void setPostingDate(Date postingDate) {
+		this.postingDate = postingDate;
+	}
 	
 	
 	
@@ -95,6 +103,7 @@ public class JobRecord {
 		
 		record.setRole(json.getString("role").toLowerCase());
 		record.setLink(json.getString("url"));
+		//record.setPostingDate(new Date(json.getString("date_posted")));
 		record.setKeywords(keywords);
 		
 		return record;

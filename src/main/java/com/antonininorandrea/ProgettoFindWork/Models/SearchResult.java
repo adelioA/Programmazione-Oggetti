@@ -2,13 +2,13 @@ package com.antonininorandrea.ProgettoFindWork.Models;
 
 import java.util.LinkedList;
 
-public class SearchResponse {
+public class SearchResult {
 	private LinkedList<JobRecord> records;
-	private LinkedList<LocationStatistics> statistics;
+	private LinkedList<StatisticsRecord> statistics;
 	
 	
 	
-	public SearchResponse(LinkedList<JobRecord> records, LinkedList<LocationStatistics> statistics) {
+	public SearchResult(LinkedList<JobRecord> records, LinkedList<StatisticsRecord> statistics) {
 		this.setRecords(records);
 		this.setStatistics(statistics);
 	}
@@ -21,10 +21,10 @@ public class SearchResponse {
 	public void setRecords(LinkedList<JobRecord> records) {
 		this.records = records;
 	}
-	public LinkedList<LocationStatistics> getStatistics() {
+	public LinkedList<StatisticsRecord> getStatistics() {
 		return statistics;
 	}
-	public void setStatistics(LinkedList<LocationStatistics> statistics) {
+	public void setStatistics(LinkedList<StatisticsRecord> statistics) {
 		this.statistics = statistics;
 	}
 }
