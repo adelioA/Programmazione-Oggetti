@@ -72,9 +72,9 @@ public class KeywordStatisticsRecord {
 			}
 		}
 		
-		stats.setPercentageKeyword(keywordCounter / collection.size());
-		stats.setPercentageRemote(remoteCounter / keywordCounter);
-		stats.setPercentageFullTime(fullTimeCounter / keywordCounter);
+		stats.setPercentageKeyword((double) keywordCounter / (double) collection.size());
+		stats.setPercentageRemote((double) remoteCounter / (double) keywordCounter);
+		stats.setPercentageFullTime((double) fullTimeCounter / (double) keywordCounter);
 		
 		return stats;
 	}
