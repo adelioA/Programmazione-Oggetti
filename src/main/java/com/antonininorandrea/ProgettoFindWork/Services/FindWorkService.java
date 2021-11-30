@@ -82,7 +82,7 @@ public class FindWorkService {
 		private final String baseLink = "https://findwork.dev/api/jobs/";
 		private String[] keywords = {  };
 		private Boolean remote;
-		private String employment;
+		private String employment; // "full time" o "contract"
 		private String location;
 		
 		
@@ -99,7 +99,7 @@ public class FindWorkService {
 		}
 		
 		public RequestBuilder employment(String type) {
-			if(type.equals("full time") || type.equals("contract"))
+			if((type != null) && (type.equals("full time") || type.equals("contract")))
 				this.employment = type;
 			return this;
 		}
