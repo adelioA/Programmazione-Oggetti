@@ -6,7 +6,7 @@ public class FilterRequest {
 	private String[] locations;
 	private String[] keywords;
 	private Boolean remote;
-	private String employement;
+	private String employment;
 	private String role;
 	private int minKeywords;
 	private int maxKeywords;
@@ -17,12 +17,12 @@ public class FilterRequest {
 	
 	
 	
-	public FilterRequest(String[] locations, String[] keywords, Boolean remote, String employement, String role,
+	public FilterRequest(String[] locations, String[] keywords, Boolean remote, String employment, String role,
 			int minKeywords, int maxKeywords, Date publishingDate, boolean includeStatistics) {
 		this.setLocations(locations);
 		this.setKeywords(keywords);
 		this.setRemote(remote);
-		this.setEmployement(employement);
+		this.setEmployment(employment);
 		this.setRole(role);
 		this.setMinKeywords(minKeywords);
 		this.setMaxKeywords(maxKeywords);
@@ -50,11 +50,11 @@ public class FilterRequest {
 	public void setRemote(Boolean remote) {
 		this.remote = remote;
 	}
-	public String getEmployement() {
-		return employement;
+	public String getEmployment() {
+		return employment;
 	}
-	public void setEmployement(String employement) {
-		this.employement = employement;
+	public void setEmployment(String employment) {
+		this.employment = employment;
 	}
 	public String getRole() {
 		return role;

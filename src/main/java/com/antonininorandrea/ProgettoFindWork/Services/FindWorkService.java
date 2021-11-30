@@ -235,14 +235,14 @@ public class FindWorkService {
 		private final String baseLink = "https://findwork.dev/api/jobs/";
 		private String[] keywords = {  };
 		private Boolean remote;
-		private String employement;
+		private String employment;
 		private String location;
 		
 		
 		
 		public RequestBuilder() {
 			this.remote = null;
-			this.employement = "";
+			this.employment = "";
 			this.location = "";
 		}
 		
@@ -251,9 +251,9 @@ public class FindWorkService {
 			return this;
 		}
 		
-		public RequestBuilder employement(String type) {
+		public RequestBuilder employment(String type) {
 			if(type.equals("full time") || type.equals("contract"))
-				this.employement = type;
+				this.employment = type;
 			return this;
 		}
 		
@@ -272,7 +272,7 @@ public class FindWorkService {
 
 			completeLink += "location=" + this.location + "&";
 			completeLink += "remote=" + ((remote == null) ? "" : remote) + "&";
-			completeLink += "employement_type=" + employement + "&";
+			completeLink += "employment_type=" + employment + "&";
 			
 			String keywordsJoin = "";
 			for(String keyword: keywords)

@@ -96,8 +96,14 @@ public class JobRecord {
 		
 		record.setRemote(json.getBoolean("remote"));
 		
-		if (json.isNull("employment_type"))
-			record.setEmployment(null);
+		if (json.isNull("employment_type")) {
+			if (json.getString("text").toLowerCase().contains("full time"))
+				record.setEmployment("full time");
+			else if (json.getString("text").toLowerCase().contains("contract"))
+				record.setEmployment("contract");
+			else
+				record.setEmployment(null);
+		}
 		else
 			record.setEmployment(json.getString("employment_type").toLowerCase());
 		
