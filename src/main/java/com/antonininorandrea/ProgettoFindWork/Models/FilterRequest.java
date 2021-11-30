@@ -11,11 +11,14 @@ public class FilterRequest {
 	private int minKeywords;
 	private int maxKeywords;
 	private Date publishingDate;
+	private boolean includeStatistics;
+	private Date firstPosting; // Per filtrare dal
+	private Date lastPosting; // Per filtrare fino al
 	
 	
 	
 	public FilterRequest(String[] locations, String[] keywords, Boolean remote, String employement, String role,
-			int minKeywords, int maxKeywords, Date publishingDate) {
+			int minKeywords, int maxKeywords, Date publishingDate, boolean includeStatistics) {
 		this.setLocations(locations);
 		this.setKeywords(keywords);
 		this.setRemote(remote);
@@ -24,6 +27,7 @@ public class FilterRequest {
 		this.setMinKeywords(minKeywords);
 		this.setMaxKeywords(maxKeywords);
 		this.setPublishingDate(publishingDate);
+		this.setIncludeStatistics(includeStatistics);
 	}
 	
 	
@@ -76,8 +80,10 @@ public class FilterRequest {
 	public void setPublishingDate(Date publishingDate) {
 		this.publishingDate = publishingDate;
 	}
-	
-	
-	
-	// TODO Metodo per filtrare una collection di record
+	public boolean isStatisticsIncluded() {
+		return includeStatistics;
+	}
+	public void setIncludeStatistics(boolean includeStatistics) {
+		this.includeStatistics = includeStatistics;
+	}
 }

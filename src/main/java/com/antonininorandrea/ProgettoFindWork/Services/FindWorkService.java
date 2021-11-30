@@ -172,32 +172,7 @@ public class FindWorkService {
 		
 		return filteredCollection;
 	}*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	private JSONObject requestURL(String url) throws JSONException, Unable2ReachAPI {
 			OkHttpClient client = new OkHttpClient.Builder()
@@ -222,8 +197,9 @@ public class FindWorkService {
 			return apiResult;
 	}
 	
-	public JSONArray getFullAPIResponse(String startingUrl) throws JSONException, Unable2ReachAPI {
+	public LinkedList<JobRecord> getFullAPIResponse(String startingUrl) throws JSONException, Unable2ReachAPI {
 		JSONArray apiResponse = new JSONArray();
+		LinkedList<JobRecord> records = new LinkedList<>();
 		
 		JSONObject response = null;
 		JSONArray pageResults = null;
@@ -242,28 +218,16 @@ public class FindWorkService {
 			
 		} while(!response.isNull("next"));
 		
-		return apiResponse;
+		for(int i = 0; i < apiResponse.length(); ++i)
+			records.add(JobRecord.fromJSON(apiResponse.getJSONObject(i)));
+		
+		return records;
 	}
-	
-	public JSONArray getFullAPIResponse() throws JSONException, Unable2ReachAPI {
+
+	public LinkedList<JobRecord> getFullAPIResponse() throws JSONException, Unable2ReachAPI {
 		RequestBuilder builder = new RequestBuilder();
 		return getFullAPIResponse(builder.build());
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
