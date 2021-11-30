@@ -229,21 +229,16 @@ public class FindWorkService {
 		JSONArray pageResults = null;
 		
 		do {
-			long millis = System.currentTimeMillis();
 			if (response == null)
 				response = this.requestURL(startingUrl);
 			else
 				response = this.requestURL(response.getString("next"));
 			
 			pageResults = (response.isNull("results")) ? new JSONArray() : response.getJSONArray("results");
-			
-			//System.err.println(pageResults.length());
-			
+						
 			for(int i = 0; i < pageResults.length(); ++i)
-				apiResponse.put(pageResults.getJSONObject(i));
-			
-			millis = System.currentTimeMillis() - millis;
-			System.err.println("REQUEST TIME: " + millis);
+				if(!pageResults.getJSONObject(i).isNull("location"))
+					apiResponse.put(pageResults.getJSONObject(i));
 			
 		} while(!response.isNull("next"));
 		
@@ -277,12 +272,19 @@ public class FindWorkService {
 		private String[] keywords = {  };
 		private Boolean remote;
 		private String employement;
+		private String location;
 		
 		
 		
 		public RequestBuilder() {
 			this.remote = null;
 			this.employement = "";
+			this.location = "";
+		}
+		
+		public RequestBuilder location(String location) {
+			this.location = location;
+			return this;
 		}
 		
 		public RequestBuilder employement(String type) {
@@ -303,7 +305,8 @@ public class FindWorkService {
 		
 		public String build() {
 			String completeLink = this.baseLink + "?";
-			
+
+			completeLink += "location=" + this.location + "&";
 			completeLink += "remote=" + ((remote == null) ? "" : remote) + "&";
 			completeLink += "employement_type=" + employement + "&";
 			
