@@ -99,7 +99,7 @@ public class JobRecord {
 		if (json.isNull("employment_type")) {
 			if (json.getString("text").toLowerCase().contains("full time"))
 				record.setEmployment("full time");
-			else if (json.getString("text").toLowerCase().contains("contract"))
+			else if (json.getString("text").toLowerCase().contains("contract") || json.getString("text").toLowerCase().contains("part time"))
 				record.setEmployment("contract");
 			else
 				record.setEmployment(null);

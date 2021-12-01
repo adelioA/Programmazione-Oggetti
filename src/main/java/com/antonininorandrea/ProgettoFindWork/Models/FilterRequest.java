@@ -10,8 +10,8 @@ public class FilterRequest {
 	private String role;
 	private int minKeywords;
 	private int maxKeywords;
-	private Date publishingDate;
 	private boolean includeStatistics;
+	//private Date publishingDate;
 	private Date firstPosting; // Per filtrare dal
 	private Date lastPosting; // Per filtrare fino al
 	
@@ -26,7 +26,7 @@ public class FilterRequest {
 		this.setRole(role);
 		this.setMinKeywords(minKeywords);
 		this.setMaxKeywords(maxKeywords);
-		this.setPublishingDate(publishingDate);
+		//this.setPublishingDate(publishingDate);
 		this.setIncludeStatistics(includeStatistics);
 	}
 	
@@ -74,12 +74,12 @@ public class FilterRequest {
 	public void setMaxKeywords(int maxKeywords) {
 		this.maxKeywords = maxKeywords;
 	}
-	public Date getPublishingDate() {
+	/*public Date getPublishingDate() {
 		return publishingDate;
 	}
 	public void setPublishingDate(Date publishingDate) {
 		this.publishingDate = publishingDate;
-	}
+	}*/
 	public boolean isStatisticsIncluded() {
 		return includeStatistics;
 	}

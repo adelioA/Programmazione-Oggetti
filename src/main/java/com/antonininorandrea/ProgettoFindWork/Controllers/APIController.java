@@ -108,9 +108,9 @@ public class APIController {
 		LinkedList<JobRecord> filteredList = new LinkedList<JobRecord>();
 		boolean validItem;
 
-		System.err.println(filters.getMinKeywords());
-		System.err.println(filters.getMaxKeywords());
-		System.err.println("==============================");
+		//System.err.println(filters.getMinKeywords());
+		//System.err.println(filters.getMaxKeywords());
+		//System.err.println("==============================");
 		
 		
 		for(int i = 0; i < collection.size(); ++i) {

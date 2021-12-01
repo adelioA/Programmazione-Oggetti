@@ -104,7 +104,7 @@ public class FindWorkService {
 			return this;
 		}
 		
-		public RequestBuilder remote(boolean remote) {
+		public RequestBuilder remote(Boolean remote) {
 			this.remote = remote;
 			return this;
 		}
@@ -119,11 +119,12 @@ public class FindWorkService {
 
 			completeLink += "location=" + this.location + "&";
 			completeLink += "remote=" + ((remote == null) ? "" : remote) + "&";
-			completeLink += "employment_type=" + employment + "&";
+			completeLink += "employment_type=" + ((employment == null) ? "" : employment) + "&";
 			
 			String keywordsJoin = "";
-			for(String keyword: keywords)
-				keywordsJoin += keyword + "+";
+			if (keywords != null)
+				for(String keyword: keywords)
+					keywordsJoin += keyword + "+";
 			
 			completeLink += "search=" + keywordsJoin;
 			
