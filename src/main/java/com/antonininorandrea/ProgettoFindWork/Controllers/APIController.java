@@ -117,10 +117,15 @@ public class APIController {
 			JobRecord item = collection.get(i);
 			validItem = true;
 			
-			System.err.println(item.getKeywords().size());
+			//System.err.println(item.getKeywords().size());
 			
 			if (item.getEmployment() == null)
 				validItem = false;
+			
+			if (filters.getMinKeywords() == null)
+				filters.setMinKeywords(0);
+			if (filters.getMaxKeywords() == null)
+				filters.setMaxKeywords(Integer.MAX_VALUE);
 			
 			if ((item.getKeywords().size() < filters.getMinKeywords()) || (item.getKeywords().size() > filters.getMaxKeywords()))
 				validItem = false;

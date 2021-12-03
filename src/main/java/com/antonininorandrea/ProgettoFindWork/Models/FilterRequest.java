@@ -8,8 +8,8 @@ public class FilterRequest {
 	private Boolean remote;
 	private String employment;
 	private String role;
-	private int minKeywords;
-	private int maxKeywords;
+	private Integer minKeywords;
+	private Integer maxKeywords;
 	private boolean includeStatistics;
 	//private Date publishingDate;
 	private Date firstPosting; // Per filtrare dal
@@ -18,7 +18,7 @@ public class FilterRequest {
 	
 	
 	public FilterRequest(String[] locations, String[] keywords, Boolean remote, String employment, String role,
-			int minKeywords, int maxKeywords, Date publishingDate, boolean includeStatistics) {
+			Integer minKeywords, Integer maxKeywords, Date publishingDate, boolean includeStatistics) {
 		this.setLocations(locations);
 		this.setKeywords(keywords);
 		this.setRemote(remote);
@@ -62,16 +62,16 @@ public class FilterRequest {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	public int getMinKeywords() {
+	public Integer getMinKeywords() {
 		return minKeywords;
 	}
-	public void setMinKeywords(int minKeywords) {
+	public void setMinKeywords(Integer minKeywords) {
 		this.minKeywords = minKeywords;
 	}
-	public int getMaxKeywords() {
+	public Integer getMaxKeywords() {
 		return maxKeywords;
 	}
-	public void setMaxKeywords(int maxKeywords) {
+	public void setMaxKeywords(Integer maxKeywords) {
 		this.maxKeywords = maxKeywords;
 	}
 	/*public Date getPublishingDate() {
