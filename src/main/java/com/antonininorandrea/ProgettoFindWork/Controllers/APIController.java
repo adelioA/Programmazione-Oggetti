@@ -39,7 +39,7 @@ public class APIController {
 	/**
 	 * @return
 	 */
-	@GetMapping("suggestions") // TODO da rendere dinamico
+	@GetMapping("suggestions")
 	public @ResponseBody String suggestLocations() {
 		return "[\"LONDON\", \"BERLIN\", \"PLANO\"]";
 	}
