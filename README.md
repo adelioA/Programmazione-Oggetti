@@ -25,3 +25,12 @@ Bisogna specificare alcune peculiarità dell'endpoint:
 >GET /api/suggestions
 
 Restituisce una breve lista di **location** utilizzabili. Da notare che non specifica la totalità di esse.
+
+
+
+### Le chiamate
+Ricapitolando:
+| **Metodo** | **Richiesta** | **Risposta** |
+| :--- | :---: | ---: |
+| GET   | /api/suggestions	| JSON |
+| GET   | /api/search		| JSON |
