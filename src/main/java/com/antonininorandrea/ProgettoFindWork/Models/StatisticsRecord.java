@@ -123,6 +123,7 @@ public class StatisticsRecord {
 		
 		stats.setRemotePercentage(remoteCounter / collection.size());
 		stats.setFullTimePercentage(fullTimeCounter / collection.size());
+		stats.setPartTimePercentage((collection.size() - fullTimeCounter) / collection.size());
 		for(int i = 0; i < keywords.size(); ++i) 
 			stats.getKeywordsStatistics().add(KeywordStatisticsRecord.getKeywordStatisticsFromCollection(keywords.get(i), collection));
 		
