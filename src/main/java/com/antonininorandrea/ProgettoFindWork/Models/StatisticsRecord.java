@@ -2,8 +2,11 @@ package com.antonininorandrea.ProgettoFindWork.Models;
 
 import java.util.LinkedList;
 
+/**
+ * @class	StatisticsRecord
+ * Classe contenente le statistiche di una città
+ */
 public class StatisticsRecord {
-	
 	private String location;
 	private double fullTimePercentage;
 	private double partTimePercentage;
@@ -31,7 +34,9 @@ public class StatisticsRecord {
 	}
 	
 	
-	
+	/**
+	 * Getters e Setters
+	 */
 	public String getLocation() {
 		return location;
 	}
@@ -82,7 +87,12 @@ public class StatisticsRecord {
 	}
 	
 	
-
+	
+	/**
+	 * @param	location	Città di riferimento delle statistiche
+	 * @param	collection	Lista di risultati (già passati per città)
+	 * @return	Statistiche della città
+	 */
 	public static StatisticsRecord getStatisticsFromCollection(String location, LinkedList<JobRecord> collection) {
 		StatisticsRecord stats = new StatisticsRecord(location);
 		

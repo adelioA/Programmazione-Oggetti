@@ -20,6 +20,8 @@ import com.antonininorandrea.ProgettoFindWork.Models.StatisticsRecord;
 import com.antonininorandrea.ProgettoFindWork.Models.Exceptions.Unable2ReachAPI;
 import com.antonininorandrea.ProgettoFindWork.Services.FindWorkService;
 
+
+
 @RestController
 @RequestMapping("api")
 @CrossOrigin
@@ -27,15 +29,27 @@ public class APIController {
 
 	private FindWorkService apiService;
 	
+	/**
+	 * 
+	 */
 	public APIController() {
 		this.apiService = new FindWorkService();
 	}
 
+	/**
+	 * @return
+	 */
 	@GetMapping("suggestions") // TODO da rendere dinamico
 	public @ResponseBody String suggestLocations() {
 		return "[\"LONDON\", \"BERLIN\", \"PLANO\"]";
 	}
 	
+	/**
+	 * Route che permette di cercare dei lavori tramite l'API di FindWork.
+	 * 
+	 * @param	filters	Filtri da applicare, mandati tramite body della richiesta GET
+	 * @return	Un oggetto SearchResult, contenente la lista di risultati e la lista delle statistiche.
+	 */
 	@GetMapping("search")
 	public @ResponseBody ResponseEntity<SearchResult> search(@RequestBody FilterRequest filters) {
 		ResponseEntity<SearchResult> responseEntity = null;
@@ -49,14 +63,6 @@ public class APIController {
 			.employment(filters.getEmployment())
 			.keywords(filters.getKeywords())
 			.remote(filters.isRemote());
-		
-		/*if (filters.getKeywords() != null)
-			requestBuilder.keywords(filters.getKeywords());
-		else
-			requestBuilder.keywords(new String[0]);
-		
-		if (filters.isRemote() != null)
-			requestBuilder.remote(filters.isRemote());*/
 			
 		// Temporaneo
 		for(int i = 0; i < filters.getLocations().length; ++i) {
@@ -64,7 +70,6 @@ public class APIController {
 				LinkedList<JobRecord> someRecords = this.apiService.getFullAPIResponse(requestBuilder.location(filters.getLocations()[i]).build());
 				LinkedList<StatisticsRecord> someStatistics = new LinkedList<>();
 				
-				//someRecords = removeInvalid(someRecords);
 				// Filtro prima di effettuare le statistiche
 				someRecords = applyOffAPIFilters(someRecords, filters);
 				records.addAll(someRecords);
@@ -72,8 +77,7 @@ public class APIController {
 				if ((someRecords.size() != 0) && (filters.isStatisticsIncluded())) {
 					someStatistics.add(StatisticsRecord.getStatisticsFromCollection(filters.getLocations()[i], someRecords));
 					statistics.addAll(someStatistics);				
-				}	
-				// TODO eventuale filtro statistiche
+				}
 				
 			}
 			catch (Unable2ReachAPI u2rAPI) {
@@ -93,32 +97,22 @@ public class APIController {
 		return responseEntity;
 	}
 	
-	/*private LinkedList<JobRecord> removeInvalid(LinkedList<JobRecord> collection) {
-		LinkedList<JobRecord> fixed = new LinkedList<JobRecord>();
-		
-		for(int i = 0; i < collection.size(); ++i) {
-			if (collection.get(i).getEmployment() != null)
-				fixed.add(collection.get(i));
-		}
-		
-		return fixed;
-	}*/
-	
+	/**
+	 * @param	collection	Lista di risultati da filtrare
+	 * @param	filters	Oggetto contenente i parametri di filtraggio.
+	 * @return	Lista di risultati filtrata.
+	 * 
+	 * @implNote	Per migliorare le performance, alcuni filtri vengono calcolati direttamente dall'API di FindWork,
+	 * 				creando una prima "scrematura".
+	 */
 	private LinkedList<JobRecord> applyOffAPIFilters(LinkedList<JobRecord> collection, FilterRequest filters) {
 		LinkedList<JobRecord> filteredList = new LinkedList<JobRecord>();
 		boolean validItem;
-
-		//System.err.println(filters.getMinKeywords());
-		//System.err.println(filters.getMaxKeywords());
-		//System.err.println("==============================");
-		
 		
 		for(int i = 0; i < collection.size(); ++i) {
 			JobRecord item = collection.get(i);
 			validItem = true;
-			
-			//System.err.println(item.getKeywords().size());
-			
+						
 			if (item.getEmployment() == null)
 				validItem = false;
 			
@@ -129,13 +123,6 @@ public class APIController {
 			
 			if ((item.getKeywords().size() < filters.getMinKeywords()) || (item.getKeywords().size() > filters.getMaxKeywords()))
 				validItem = false;
-			
-			/*if ((filters.getRole() == null) || (!item.getRole().toLowerCase().contains(filters.getRole())))
-				validItem = false;
-			/*if ((item.getEmployment() != null) &&
-				(item.getKeywords().size() >= filters.getMinKeywords()) &&
-				(item.getKeywords().size() <= filters.getMaxKeywords()) &&
-				(item.getRole().toLowerCase().contains(filters.getRole().toLowerCase())))*/
 			
 			if (validItem)
 				filteredList.add(item);

@@ -7,6 +7,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+/**
+ * @class JobRecord
+ * 
+ * Classe che identifica un risultato ('semplificato') dell'API di FindWork.
+ */
 public class JobRecord {
 	private long id; // 'id'
 	private String location; // 'location'; Null se remoto
@@ -14,12 +20,13 @@ public class JobRecord {
 	private String employment; // 'employment-type'; Null se part-time (o remote?)
 	private String role; // 'role'
 	private String link; // 'url'
-	private Date postingDate; // 'date_pusted'
 	private LinkedList<String> keywords; // 'keywords'
 	
 	
-	// TODO fare costruttore
 	
+	/**
+	 * Getters e Setters
+	 */
 	public long getId() {
 		return id;
 	}
@@ -68,15 +75,14 @@ public class JobRecord {
 	public void setKeywords(LinkedList<String> keywords) {
 		this.keywords = keywords;
 	}
-	public Date getPostingDate() {
-		return postingDate;
-	}
-	public void setPostingDate(Date postingDate) {
-		this.postingDate = postingDate;
-	}
 	
 	
 	
+	/**
+	 * @param	json L'oggetto JSON contenente un risultato della richiesta.
+	 * @return	Il corrispettivo oggetto JobRecord estratto dal JSON
+	 * @throws	JSONException Eccezione sollevata in caso di errore di lettura del JSON
+	 */
 	public static JobRecord fromJSON(JSONObject json) throws JSONException {
 		JobRecord record = new JobRecord();
 		
@@ -109,7 +115,6 @@ public class JobRecord {
 		
 		record.setRole(json.getString("role").toLowerCase());
 		record.setLink(json.getString("url"));
-		//record.setPostingDate(new Date(json.getString("date_posted")));
 		record.setKeywords(keywords);
 		
 		return record;

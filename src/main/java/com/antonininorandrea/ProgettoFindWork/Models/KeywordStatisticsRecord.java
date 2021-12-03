@@ -2,6 +2,10 @@ package com.antonininorandrea.ProgettoFindWork.Models;
 
 import java.util.LinkedList;
 
+/**
+ * @class	KeywordStatisticsRecord
+ * Classe per definire le statistiche di utilizzo di una keyword
+ */
 public class KeywordStatisticsRecord {
 	private String keyword;
 	private double percentageKeyword; // [0, 1]
@@ -22,7 +26,9 @@ public class KeywordStatisticsRecord {
 	}
 	
 	
-	
+	/**
+	 * Getters e Setters
+	 */
 	public String getKeyword() {
 		return keyword;
 	}
@@ -53,6 +59,11 @@ public class KeywordStatisticsRecord {
 	
 	
 	
+	/**
+	 * @param	keyword		La keyword di cui vogliamo calcolare le statistiche di utilizzo
+	 * @param	collection	Lista di risultati in cui calcolare le statistiche di utilizzo
+	 * @return	Le statistiche di utilizzo di una determinata keyword
+	 */
 	public static KeywordStatisticsRecord getKeywordStatisticsFromCollection(String keyword, LinkedList<JobRecord> collection) {
 		KeywordStatisticsRecord stats = new KeywordStatisticsRecord(keyword);
 		

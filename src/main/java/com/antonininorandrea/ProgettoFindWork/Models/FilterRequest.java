@@ -2,6 +2,13 @@ package com.antonininorandrea.ProgettoFindWork.Models;
 
 import java.util.Date;
 
+
+/**
+ * @class FilterRequest
+ * 
+ * Classe che serve per contenere i parametri della richiesta.
+ * @implNote Da notare che non è necessario un construttore, in quanto Spring convertirà direttamente da JSON ad oggetto di classe.
+ */
 public class FilterRequest {
 	private String[] locations;
 	private String[] keywords;
@@ -11,27 +18,10 @@ public class FilterRequest {
 	private Integer minKeywords;
 	private Integer maxKeywords;
 	private boolean includeStatistics;
-	//private Date publishingDate;
-	private Date firstPosting; // Per filtrare dal
-	private Date lastPosting; // Per filtrare fino al
 	
-	
-	
-	public FilterRequest(String[] locations, String[] keywords, Boolean remote, String employment, String role,
-			Integer minKeywords, Integer maxKeywords, Date publishingDate, boolean includeStatistics) {
-		this.setLocations(locations);
-		this.setKeywords(keywords);
-		this.setRemote(remote);
-		this.setEmployment(employment);
-		this.setRole(role);
-		this.setMinKeywords(minKeywords);
-		this.setMaxKeywords(maxKeywords);
-		//this.setPublishingDate(publishingDate);
-		this.setIncludeStatistics(includeStatistics);
-	}
-	
-	
-	
+	/**
+	 * Getters e Setters
+	 */
 	public String[] getLocations() {
 		return locations;
 	}
@@ -74,12 +64,6 @@ public class FilterRequest {
 	public void setMaxKeywords(Integer maxKeywords) {
 		this.maxKeywords = maxKeywords;
 	}
-	/*public Date getPublishingDate() {
-		return publishingDate;
-	}
-	public void setPublishingDate(Date publishingDate) {
-		this.publishingDate = publishingDate;
-	}*/
 	public boolean isStatisticsIncluded() {
 		return includeStatistics;
 	}
