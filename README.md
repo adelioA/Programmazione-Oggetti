@@ -26,11 +26,16 @@ Bisogna specificare alcune peculiarità dell'endpoint:
 
 Restituisce una breve lista di **location** utilizzabili. Da notare che non specifica la totalità di esse.
 
-
-
 ### Le chiamate
 Ricapitolando:
 | **Metodo** | **Richiesta** | **Risposta** |
 | :--- | :---: | ---: |
 | GET   | /api/suggestions	| JSON |
 | GET   | /api/search		| JSON |
+
+## Software Utilizzati
+* [SpringBoot](https://spring.io/projects/spring-boot) - Framework per applicazioni Java.
+* [Eclipse](https://www.eclipse.org/) - IDE per linguaggio Java.
+
+## Reference API
+* **FindWork.dev:** [jobs](https://findwork.dev/api/jobs)
