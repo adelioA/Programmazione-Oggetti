@@ -41,7 +41,7 @@ public class APIController {
 	 */
 	@GetMapping("suggestions")
 	public @ResponseBody String suggestLocations() {
-		return "[\"LONDON\", \"BERLIN\", \"PLANO\"]";
+		return "[\"LONDON\", \"BERLIN\", \"PLANO\", \"NEW YORK\", \"PARIS\", \"TOKYO\", \"CHICAGO\", \"BOSTON\", \"SAN FRANCISCO\", \"DENVER\", \"US\"]";
 	}
 	
 	/**
@@ -64,7 +64,8 @@ public class APIController {
 			.keywords(filters.getKeywords())
 			.remote(filters.isRemote());
 			
-		// Temporaneo
+		
+		
 		for(int i = 0; i < filters.getLocations().length; ++i) {
 			try {
 				LinkedList<JobRecord> someRecords = this.apiService.getFullAPIResponse(requestBuilder.location(filters.getLocations()[i]).build());
