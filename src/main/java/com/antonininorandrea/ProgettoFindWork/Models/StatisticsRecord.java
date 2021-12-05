@@ -1,6 +1,10 @@
 package com.antonininorandrea.ProgettoFindWork.Models;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * @class	StatisticsRecord
@@ -11,18 +15,18 @@ public class StatisticsRecord {
 	private double fullTimePercentage;
 	private double partTimePercentage;
 	private double remotePercentage;
-	private String[] topRoles;
+	private LinkedList<String> topRoles;
 	private int minKeywords;
 	private int maxKeywords;
 	private LinkedList<KeywordStatisticsRecord> keywordsStatistics;
 	
 	
 	protected StatisticsRecord(String location) {
-		this(location, 0, 0, 0, new String[0], Integer.MAX_VALUE, 0, new LinkedList<>());
+		this(location, 0, 0, 0, new LinkedList<String>(), Integer.MAX_VALUE, 0, new LinkedList<>());
 	}
 	
 	protected StatisticsRecord(String location, double fullTimePercentage, double partTimePercentage,
-			double remotePercentage, String[] topRoles, int minKeywords, int maxKeywords, LinkedList<KeywordStatisticsRecord> keywordStatistics) {
+			double remotePercentage, LinkedList<String> topRoles, int minKeywords, int maxKeywords, LinkedList<KeywordStatisticsRecord> keywordStatistics) {
 		this.setLocation(location);
 		this.setFullTimePercentage(fullTimePercentage);
 		this.setPartTimePercentage(partTimePercentage);
@@ -61,10 +65,10 @@ public class StatisticsRecord {
 	public void setRemotePercentage(double remotePercentage) {
 		this.remotePercentage = remotePercentage;
 	}
-	public String[] getTopRoles() {
+	public LinkedList<String> getTopRoles() {
 		return topRoles;
 	}
-	public void setTopRoles(String... topRoles) {
+	public void setTopRoles(LinkedList<String> topRoles) {
 		this.topRoles = topRoles;
 	}
 	public int getMinKeywords() {
@@ -101,6 +105,8 @@ public class StatisticsRecord {
 		LinkedList<String> keywords = new LinkedList<>();
 		LinkedList<String> roles = new LinkedList<>();
 		
+		HashMap<String, Integer> rolesMap = new HashMap<>();
+		
 		for(int i = 0; i < collection.size(); ++i) {
 			JobRecord item = collection.get(i);
 			
@@ -113,6 +119,11 @@ public class StatisticsRecord {
 			if (item.getKeywords().size() < stats.getMinKeywords())
 				stats.setMinKeywords(item.getKeywords().size());
 			
+			if (rolesMap.containsKey(item.getRole()))
+				rolesMap.put(item.getRole(), rolesMap.get(item.getRole()) + 1);
+			else
+				rolesMap.put(item.getRole(), 1);
+			
 			// List Keywords
 			for(int j = 0; j < item.getKeywords().size(); ++j) {
 				if (!keywords.contains(item.getKeywords().get(j)))
@@ -121,9 +132,26 @@ public class StatisticsRecord {
 			
 		}
 		
+		for(int i = 0, topRolesCount = (rolesMap.size() > 5) ? 5 : rolesMap.size(); i < topRolesCount; ++i) {
+			//Set<String, Integer> maxCountRole = new Set<>("", 0);
+			String maxRoleName = "";
+			int maxRoleCount = 0;
+			
+			for(Map.Entry<String, Integer> entry: rolesMap.entrySet())
+				if (entry.getValue() >= maxRoleCount) {
+					maxRoleName = entry.getKey();
+					maxRoleCount = entry.getValue();
+				}
+			
+			roles.add(maxRoleName);
+			rolesMap.remove(maxRoleName);
+		}
+		
+		
 		stats.setRemotePercentage(remoteCounter / collection.size());
 		stats.setFullTimePercentage(fullTimeCounter / collection.size());
 		stats.setPartTimePercentage((collection.size() - fullTimeCounter) / collection.size());
+		stats.setTopRoles(roles);
 		for(int i = 0; i < keywords.size(); ++i) 
 			stats.getKeywordsStatistics().add(KeywordStatisticsRecord.getKeywordStatisticsFromCollection(keywords.get(i), collection));
 		

@@ -116,6 +116,8 @@ public class APIController {
 			if (item.getEmployment() == null)
 				validItem = false;
 			
+			if (filters.getKeywords() != null)
+				filters.setMinKeywords(filters.getKeywords().length);
 			if (filters.getMinKeywords() == null)
 				filters.setMinKeywords(0);
 			if (filters.getMaxKeywords() == null)

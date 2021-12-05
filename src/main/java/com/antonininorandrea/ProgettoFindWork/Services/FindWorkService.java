@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.antonininorandrea.ProgettoFindWork.Models.JobRecord;
-import com.antonininorandrea.ProgettoFindWork.Models.Exceptions.JsonParsingException;
 import com.antonininorandrea.ProgettoFindWork.Models.Exceptions.Unable2ReachAPI;
 
 import okhttp3.MediaType;
