@@ -11,7 +11,7 @@ public class SearchResult {
 	private LinkedList<StatisticsRecord> statistics;
 	
 	
-	
+
 	public SearchResult(LinkedList<JobRecord> records, LinkedList<StatisticsRecord> statistics) {
 		this.setRecords(records);
 		this.setStatistics(statistics);

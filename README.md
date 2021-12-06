@@ -2613,5 +2613,5 @@ Questo percorso ritorna semplicemente una lista di luoghi, scelti arbitrariament
 
 ## Autori
 * **Adelio Antonini**
-* **Leonardo Norandrea**
+* **Leonardo Notarandrea**
 * **Elia Zito**

@@ -103,7 +103,7 @@ public class StatisticsRecord {
 		int remoteCounter = 0;
 		int fullTimeCounter = 0;
 		LinkedList<String> keywords = new LinkedList<>();
-		LinkedList<String> roles = new LinkedList<>();
+		LinkedList<String> roles = new LinkedList<>(); // Top roles
 		
 		HashMap<String, Integer> rolesMap = new HashMap<>();
 		
@@ -148,9 +148,9 @@ public class StatisticsRecord {
 		}
 		
 		
-		stats.setRemotePercentage(remoteCounter / collection.size());
-		stats.setFullTimePercentage(fullTimeCounter / collection.size());
-		stats.setPartTimePercentage((collection.size() - fullTimeCounter) / collection.size());
+		stats.setRemotePercentage((double) remoteCounter / (double) collection.size());
+		stats.setFullTimePercentage((double) fullTimeCounter / (double) collection.size());
+		stats.setPartTimePercentage((double)(collection.size() - fullTimeCounter) / (double) collection.size());
 		stats.setTopRoles(roles);
 		for(int i = 0; i < keywords.size(); ++i) 
 			stats.getKeywordsStatistics().add(KeywordStatisticsRecord.getKeywordStatisticsFromCollection(keywords.get(i), collection));

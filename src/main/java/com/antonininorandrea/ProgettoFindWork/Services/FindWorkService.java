@@ -176,12 +176,12 @@ public class FindWorkService {
 			String completeLink = this.baseLink + "?";
 
 			completeLink += "location=" + this.location + "&";
-			completeLink += "remote=" + ((remote == null) ? "" : remote) + "&";
-			completeLink += "employment_type=" + ((employment == null) ? "" : employment) + "&";
+			completeLink += "remote=" + ((this.remote == null) ? "" : this.remote) + "&";
+			completeLink += "employment_type=" + ((this.employment == null) ? "" : this.employment) + "&";
 			
 			String keywordsJoin = "";
-			if (keywords != null)
-				for(String keyword: keywords)
+			if (this.keywords != null)
+				for(String keyword: this.keywords)
 					keywordsJoin += keyword + "+";
 			
 			completeLink += "search=" + keywordsJoin;
