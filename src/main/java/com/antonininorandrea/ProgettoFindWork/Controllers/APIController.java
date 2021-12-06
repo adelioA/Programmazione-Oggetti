@@ -54,46 +54,50 @@ public class APIController {
 	public @ResponseBody ResponseEntity<SearchResult> search(@RequestBody FilterRequest filters) {
 		ResponseEntity<SearchResult> responseEntity = null;
 		
-		LinkedList<JobRecord> records = new LinkedList<>();
-		LinkedList<StatisticsRecord> statistics = new LinkedList<>();
-		
-		// Sfrutto i filtri di findwork.dev
-		FindWorkService.RequestBuilder requestBuilder = new FindWorkService.RequestBuilder();
-		requestBuilder
-			.employment(filters.getEmployment())
-			.keywords(filters.getKeywords())
-			.remote(filters.isRemote());
+		if ((filters.getLocations() == null) || (filters.getLocations().length == 0))
+			responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		else {
+			LinkedList<JobRecord> records = new LinkedList<>();
+			LinkedList<StatisticsRecord> statistics = new LinkedList<>();
 			
-		
-		
-		for(int i = 0; i < filters.getLocations().length; ++i) {
-			try {
-				LinkedList<JobRecord> someRecords = this.apiService.getFullAPIResponse(requestBuilder.location(filters.getLocations()[i]).build());
-				LinkedList<StatisticsRecord> someStatistics = new LinkedList<>();
+			// Sfrutto i filtri di findwork.dev
+			FindWorkService.RequestBuilder requestBuilder = new FindWorkService.RequestBuilder();
+			requestBuilder
+				.employment(filters.getEmployment())
+				.keywords(filters.getKeywords())
+				.remote(filters.isRemote());
 				
-				// Filtro prima di effettuare le statistiche
-				someRecords = applyOffAPIFilters(someRecords, filters);
-				records.addAll(someRecords);
-				
-				if ((someRecords.size() != 0) && (filters.isStatisticsIncluded())) {
-					someStatistics.add(StatisticsRecord.getStatisticsFromCollection(filters.getLocations()[i], someRecords));
-					statistics.addAll(someStatistics);				
+			
+			
+			for(int i = 0; i < filters.getLocations().length; ++i) {
+				try {
+					LinkedList<JobRecord> someRecords = this.apiService.getFullAPIResponse(requestBuilder.location(filters.getLocations()[i]).build());
+					LinkedList<StatisticsRecord> someStatistics = new LinkedList<>();
+					
+					// Filtro prima di effettuare le statistiche
+					someRecords = applyOffAPIFilters(someRecords, filters);
+					records.addAll(someRecords);
+					
+					if ((someRecords.size() != 0) && (filters.isStatisticsIncluded())) {
+						someStatistics.add(StatisticsRecord.getStatisticsFromCollection(filters.getLocations()[i], someRecords));
+						statistics.addAll(someStatistics);				
+					}
+					
 				}
+				catch (Unable2ReachAPI u2rAPI) {
+					responseEntity = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					responseEntity = new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT); // Per ridere
+				}
+			}
+	
+			if (!filters.isStatisticsIncluded())
+				statistics = null;
 				
-			}
-			catch (Unable2ReachAPI u2rAPI) {
-				responseEntity = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				responseEntity = new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT); // Per ridere
-			}
+			responseEntity = new ResponseEntity<>(new SearchResult(records, statistics), HttpStatus.OK);
 		}
-
-		if (!filters.isStatisticsIncluded())
-			statistics = null;
-			
-		responseEntity = new ResponseEntity<>(new SearchResult(records, statistics), HttpStatus.OK);
 		
 		return responseEntity;
 	}
