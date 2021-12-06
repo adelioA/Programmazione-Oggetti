@@ -131,6 +131,9 @@ public class APIController {
 			if ((item.getKeywords().size() < filters.getMinKeywords()) || (item.getKeywords().size() > filters.getMaxKeywords()))
 				validItem = false;
 			
+			if ((filters.getRole() != null) && (!item.getRole().toLowerCase().contains(filters.getRole().toLowerCase())))
+				validItem = false;
+			
 			if (validItem)
 				filteredList.add(item);
 		}
