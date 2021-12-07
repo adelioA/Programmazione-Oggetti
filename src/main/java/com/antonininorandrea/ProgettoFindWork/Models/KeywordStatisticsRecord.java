@@ -71,21 +71,24 @@ public class KeywordStatisticsRecord {
 		int remoteCounter = 0;
 		int fullTimeCounter = 0;
 		
+		// Per ogni record
 		for(int i = 0; i < collection.size(); ++i) {
 			JobRecord item = collection.get(i);
 		
+			// Se contiene la keyword
 			if (item.getKeywords().contains(keyword)) {
-				++keywordCounter;
+				++keywordCounter;		// Aumento il numero di record contenenti la keyword specioficata
 				if (item.isRemote())
-					++remoteCounter;
+					++remoteCounter;	// Se è remoto lo conto per le percentuali remote
 				if (item.getEmployment().equals("full time"))
-					++fullTimeCounter;
+					++fullTimeCounter;	// Se è full time lo conto per le percentuali full time
 			}
 		}
 		
-		stats.setPercentageKeyword((double) keywordCounter / (double) collection.size());
-		stats.setPercentageRemote((double) remoteCounter / (double) keywordCounter);
-		stats.setPercentageFullTime((double) fullTimeCounter / (double) keywordCounter);
+		// Le percentuali vengono calcolate tramite i contatori
+		stats.setPercentageKeyword((double) keywordCounter / (double) collection.size());	// Percentuale utilizzo = Utilizzati / Totali
+		stats.setPercentageRemote((double) remoteCounter / (double) keywordCounter);		// Percentuale remoti = Remoti / Utilizzati
+		stats.setPercentageFullTime((double) fullTimeCounter / (double) keywordCounter);	// Percentuale full time = Full Time / Utilizzati
 		
 		return stats;
 	}
