@@ -8,7 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.antonininorandrea.ProgettoFindWork.Models.JobRecord;
-import com.antonininorandrea.ProgettoFindWork.Models.Exceptions.Unable2ReachAPI;
+import com.antonininorandrea.ProgettoFindWork.Models.Exceptions.Unable2ReachAPIException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -29,9 +29,9 @@ public class FindWorkService {
 	 * @return	L'oggetto JSON ottenuto dall'API
 	 * 
 	 * @throws JSONException
-	 * @throws Unable2ReachAPI
+	 * @throws Unable2ReachAPIException
 	 */
-	private JSONObject requestURL(String url) throws JSONException, Unable2ReachAPI {
+	private JSONObject requestURL(String url) throws JSONException, Unable2ReachAPIException {
 			OkHttpClient client = new OkHttpClient.Builder()
 					.build();
 			
@@ -48,7 +48,7 @@ public class FindWorkService {
 				Response response = client.newCall(request).execute();
 				apiResult = new JSONObject(response.body().string());
 			} catch (NullPointerException | IOException e) {
-				throw new Unable2ReachAPI();
+				throw new Unable2ReachAPIException();
 			}
 			
 			return apiResult;
@@ -59,13 +59,13 @@ public class FindWorkService {
 	 * @return	Lista di lavori trovati.
 	 * 
 	 * @throws JSONException
-	 * @throws Unable2ReachAPI
+	 * @throws Unable2ReachAPIException
 	 * 
 	 * @implNote	Si è utilizzato il nome startingUrl in quanto findwork.dev raggruppa i risultati in pagine contenenti massimo 100 di essi.
 	 * 				Per ottenerli tutti è necessario continuare a fare chiamate ai link contenuti nel campo "next" della risposta.
 	 * 				Tuttavia, questo comporta una non indifferente lentezza nel restituire un risultato completo.
 	 */
-	public LinkedList<JobRecord> getFullAPIResponse(String startingUrl) throws JSONException, Unable2ReachAPI {
+	public LinkedList<JobRecord> getFullAPIResponse(String startingUrl) throws JSONException, Unable2ReachAPIException {
 		JSONArray apiResponse = new JSONArray();
 		LinkedList<JobRecord> records = new LinkedList<>();
 		
@@ -96,12 +96,12 @@ public class FindWorkService {
 	 * @return	Come il metodo precedente, ma con tutti i risultati di findwork
 	 * 
 	 * @throws JSONException
-	 * @throws Unable2ReachAPI
+	 * @throws Unable2ReachAPIException
 	 * 
 	 * @implNote	In realtà non sono propriamente tutti i risultati, siccome findwork limita le richieste a 60 al minuto.
 	 * @deprecated	Metodo implementato ma non utilizzato. Tuttavia non si sa mai.
 	 */
-	public LinkedList<JobRecord> getFullAPIResponse() throws JSONException, Unable2ReachAPI {
+	public LinkedList<JobRecord> getFullAPIResponse() throws JSONException, Unable2ReachAPIException {
 		RequestBuilder builder = new RequestBuilder();
 		return getFullAPIResponse(builder.build());
 	}
