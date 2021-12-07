@@ -52,8 +52,28 @@ public class APIController {
 	public @ResponseBody ResponseEntity<SearchResult> search(@RequestBody FilterRequest filters) {
 		ResponseEntity<SearchResult> responseEntity = null;
 		
-		// Controlliamo se sono presenti dei luoghi in cui cercare. Se assenti viene restituito un errore
+		// Validiamo i luoghi in cui cercare
 		if ((filters.getLocations() == null) || (filters.getLocations().length == 0))
+			responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		else {
+			// Lista dei luoghi validi
+			LinkedList<String> validLocations = new LinkedList<>();
+			// Per ogni luogo controllo se è valido.
+			for(int i = 0; i < filters.getLocations().length; ++i)
+				if ((filters.getLocations()[i] != null) && (!filters.getLocations()[i].isBlank()))
+					validLocations.add(filters.getLocations()[i].toLowerCase()); // Se valido lo aggiungo alla lista
+			
+			// Sovrascrivo la lista richiesta con la lista valida
+			String[] fixed = new String[validLocations.size()];
+			for (int i = 0; i < validLocations.size(); ++i)
+				fixed[i] = validLocations.get(i);
+			filters.setLocations(fixed);
+			
+		}
+		
+		
+		// Se assenti viene restituito un errore
+		if (filters.getLocations().length == 0)
 			responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		else {
 			LinkedList<JobRecord> records = new LinkedList<>();
