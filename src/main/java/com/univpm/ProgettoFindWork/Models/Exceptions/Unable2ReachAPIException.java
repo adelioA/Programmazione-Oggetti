@@ -1,4 +1,4 @@
-package com.antonininorandrea.ProgettoFindWork.Models.Exceptions;
+package com.univpm.ProgettoFindWork.Models.Exceptions;
 
 public class Unable2ReachAPIException extends Exception {
 

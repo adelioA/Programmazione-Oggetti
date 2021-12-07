@@ -1,4 +1,4 @@
-package com.antonininorandrea.ProgettoFindWork.Services;
+package com.univpm.ProgettoFindWork.Services;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -7,8 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.antonininorandrea.ProgettoFindWork.Models.JobRecord;
-import com.antonininorandrea.ProgettoFindWork.Models.Exceptions.Unable2ReachAPIException;
+import com.univpm.ProgettoFindWork.Models.JobRecord;
+import com.univpm.ProgettoFindWork.Models.Exceptions.Unable2ReachAPIException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;

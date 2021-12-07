@@ -1,4 +1,4 @@
-package com.antonininorandrea.ProgettoFindWork.Controllers;
+package com.univpm.ProgettoFindWork.Controllers;
 
 import java.util.LinkedList;
 
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.antonininorandrea.ProgettoFindWork.Models.FilterRequest;
-import com.antonininorandrea.ProgettoFindWork.Models.JobRecord;
-import com.antonininorandrea.ProgettoFindWork.Models.SearchResult;
-import com.antonininorandrea.ProgettoFindWork.Models.StatisticsRecord;
-import com.antonininorandrea.ProgettoFindWork.Models.Exceptions.Unable2ReachAPIException;
-import com.antonininorandrea.ProgettoFindWork.Services.FindWorkService;
+import com.univpm.ProgettoFindWork.Models.FilterRequest;
+import com.univpm.ProgettoFindWork.Models.JobRecord;
+import com.univpm.ProgettoFindWork.Models.SearchResult;
+import com.univpm.ProgettoFindWork.Models.StatisticsRecord;
+import com.univpm.ProgettoFindWork.Models.Exceptions.Unable2ReachAPIException;
+import com.univpm.ProgettoFindWork.Services.FindWorkService;
 
 
 

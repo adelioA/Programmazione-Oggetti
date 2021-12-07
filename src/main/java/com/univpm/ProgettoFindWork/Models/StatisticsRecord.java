@@ -1,4 +1,4 @@
-package com.antonininorandrea.ProgettoFindWork.Models;
+package com.univpm.ProgettoFindWork.Models;
 
 import java.util.HashMap;
 import java.util.LinkedList;
