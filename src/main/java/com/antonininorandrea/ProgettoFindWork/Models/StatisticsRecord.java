@@ -105,26 +105,34 @@ public class StatisticsRecord {
 		LinkedList<String> keywords = new LinkedList<>();
 		LinkedList<String> roles = new LinkedList<>(); // Top roles
 		
+		// HashMap per associare ogni ruolo al numero di volte che viene ripetuto
 		HashMap<String, Integer> rolesMap = new HashMap<>();
 		
+		// Per ogni record
 		for(int i = 0; i < collection.size(); ++i) {
 			JobRecord item = collection.get(i);
 			
+			// Se è remoto, incremento il contatore
 			if (item.isRemote())
 				++remoteCounter;
+			// Se è full time, incremento il contatore
 			if (item.getEmployment().equals("full time"))
 				++fullTimeCounter;
+			// Se il numero di keywords è maggiore del massimo, aggiorna il massimo
 			if (item.getKeywords().size() > stats.getMaxKeywords())
 				stats.setMaxKeywords(item.getKeywords().size());
+			// Se il numero di keywords è minore del minimo, aggiorna il minimo
 			if (item.getKeywords().size() < stats.getMinKeywords())
 				stats.setMinKeywords(item.getKeywords().size());
 			
+			// Se il ruolo del record attuale è presente, incremento il contatore
 			if (rolesMap.containsKey(item.getRole()))
 				rolesMap.put(item.getRole(), rolesMap.get(item.getRole()) + 1);
+			// Altrimenti lo aggiungo con valore 1 (almeno un'occorrenza)
 			else
 				rolesMap.put(item.getRole(), 1);
 			
-			// List Keywords
+			// Per ogni keyword del record, se non è presente nella lista generale, lo aggiungo
 			for(int j = 0; j < item.getKeywords().size(); ++j) {
 				if (!keywords.contains(item.getKeywords().get(j)))
 					keywords.add(item.getKeywords().get(j));
@@ -132,26 +140,32 @@ public class StatisticsRecord {
 			
 		}
 		
+		// Calcolo i ruoli più richiesti (max 5)
 		for(int i = 0, topRolesCount = (rolesMap.size() > 5) ? 5 : rolesMap.size(); i < topRolesCount; ++i) {
-			//Set<String, Integer> maxCountRole = new Set<>("", 0);
-			String maxRoleName = "";
-			int maxRoleCount = 0;
+			String maxRoleName = "";	// Nome del ruolo
+			int maxRoleCount = 0;		// Counter
 			
+			// Per ogni coppia ruolo-counter
 			for(Map.Entry<String, Integer> entry: rolesMap.entrySet())
+				// Se il counter è maggiore o uguale di quello attuale, sovracrivo il ruolo più richiesto
 				if (entry.getValue() >= maxRoleCount) {
 					maxRoleName = entry.getKey();
 					maxRoleCount = entry.getValue();
 				}
 			
+			// Lo aggiungo alla lista dei più richiesti
 			roles.add(maxRoleName);
+			// Lo rimuovo dalla HashMap (per evitare di ricontarlo)
 			rolesMap.remove(maxRoleName);
 		}
 		
-		
+		// Calcolo le statistiche
 		stats.setRemotePercentage((double) remoteCounter / (double) collection.size());
 		stats.setFullTimePercentage((double) fullTimeCounter / (double) collection.size());
 		stats.setPartTimePercentage((double)(collection.size() - fullTimeCounter) / (double) collection.size());
 		stats.setTopRoles(roles);
+		
+		// Calcolo le statistiche di ogni keyword
 		for(int i = 0; i < keywords.size(); ++i) 
 			stats.getKeywordsStatistics().add(KeywordStatisticsRecord.getKeywordStatisticsFromCollection(keywords.get(i), collection));
 		
