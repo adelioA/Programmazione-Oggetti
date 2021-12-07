@@ -17,7 +17,7 @@ import com.antonininorandrea.ProgettoFindWork.Models.FilterRequest;
 import com.antonininorandrea.ProgettoFindWork.Models.JobRecord;
 import com.antonininorandrea.ProgettoFindWork.Models.SearchResult;
 import com.antonininorandrea.ProgettoFindWork.Models.StatisticsRecord;
-import com.antonininorandrea.ProgettoFindWork.Models.Exceptions.Unable2ReachAPI;
+import com.antonininorandrea.ProgettoFindWork.Models.Exceptions.Unable2ReachAPIException;
 import com.antonininorandrea.ProgettoFindWork.Services.FindWorkService;
 
 
@@ -29,15 +29,13 @@ public class APIController {
 
 	private FindWorkService apiService;
 	
-	/**
-	 * 
-	 */
 	public APIController() {
 		this.apiService = new FindWorkService();
 	}
 
 	/**
-	 * @return
+	 * Route che suggerisce dei luoghi dove cercare dei lavori tramite l'API di FindWork.
+	 * @return	Lista di luoghi
 	 */
 	@GetMapping("suggestions")
 	public @ResponseBody String suggestLocations() {
@@ -54,6 +52,7 @@ public class APIController {
 	public @ResponseBody ResponseEntity<SearchResult> search(@RequestBody FilterRequest filters) {
 		ResponseEntity<SearchResult> responseEntity = null;
 		
+		// Controlliamo se sono presenti dei luoghi in cui cercare. Se assenti viene restituito un errore
 		if ((filters.getLocations() == null) || (filters.getLocations().length == 0))
 			responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		else {
@@ -68,35 +67,39 @@ public class APIController {
 				.remote(filters.isRemote());
 				
 			
-			
-			for(int i = 0; i < filters.getLocations().length; ++i) {
-				try {
+			try {
+				// Per ogni luogo andiamo ad effettuare una richiesta
+				for(int i = 0; i < filters.getLocations().length; ++i) {
 					LinkedList<JobRecord> someRecords = this.apiService.getFullAPIResponse(requestBuilder.location(filters.getLocations()[i]).build());
 					LinkedList<StatisticsRecord> someStatistics = new LinkedList<>();
 					
-					// Filtro prima di effettuare le statistiche
+					// Filtriamo prima di effettuare le statistiche
 					someRecords = applyOffAPIFilters(someRecords, filters);
 					records.addAll(someRecords);
 					
+					// Se non richiedo le statistiche oppure non ottengo risultati dall'API non calcolo le statistiche per il luogo
 					if ((someRecords.size() != 0) && (filters.isStatisticsIncluded())) {
 						someStatistics.add(StatisticsRecord.getStatisticsFromCollection(filters.getLocations()[i], someRecords));
 						statistics.addAll(someStatistics);				
 					}
-					
 				}
-				catch (Unable2ReachAPI u2rAPI) {
-					responseEntity = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-					responseEntity = new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT); // Per ridere
-				}
-			}
-	
-			if (!filters.isStatisticsIncluded())
-				statistics = null;
+		
+				// Se non vogliamo avere le statistiche, le settiamo a null
+				if (!filters.isStatisticsIncluded())
+					statistics = null;
 				
-			responseEntity = new ResponseEntity<>(new SearchResult(records, statistics), HttpStatus.OK);
+				// Restituiamo i risultati della ricerca
+				responseEntity = new ResponseEntity<>(new SearchResult(records, statistics), HttpStatus.OK);
+			}
+			catch (Unable2ReachAPIException u2rAPI) {
+				// Se non riesciamo a contattare FindWork, restituiremo uno status SERVICE UNAVAILEBLE
+				responseEntity = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				// Se dovessero esserci eccezioni inattese, restituiremo uno status I AM A TEAPOT
+				responseEntity = new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT); // Per ridere
+			}
 		}
 		
 		return responseEntity;
@@ -114,26 +117,36 @@ public class APIController {
 		LinkedList<JobRecord> filteredList = new LinkedList<JobRecord>();
 		boolean validItem;
 		
+		// Per ogni record
 		for(int i = 0; i < collection.size(); ++i) {
+			// Memorizzo il record corrente
 			JobRecord item = collection.get(i);
+			// Assumo che sia valido
 			validItem = true;
-						
+			
+			// Se l'employment è nullo il record non è valido
 			if (item.getEmployment() == null)
 				validItem = false;
 			
+			// Se vi sono delle keywords da cercare, il numero minimo di keywords dev'essere il numero di quelle richieste
 			if (filters.getKeywords() != null)
 				filters.setMinKeywords(filters.getKeywords().length);
+			// Se non è specificato un numero minimo di keywords, si assume che sia 0
 			if (filters.getMinKeywords() == null)
 				filters.setMinKeywords(0);
+			// Se non è specificato un numero massimo di keywords, si assume che sia il massimo rappresentabile da un intero
 			if (filters.getMaxKeywords() == null)
 				filters.setMaxKeywords(Integer.MAX_VALUE);
 			
+			// Se le keywords non rientrano nel range richiesto, il record non è valido
 			if ((item.getKeywords().size() < filters.getMinKeywords()) || (item.getKeywords().size() > filters.getMaxKeywords()))
 				validItem = false;
 			
+			// Se il ruolo non è contenuto nel record, esso non è valido
 			if ((filters.getRole() != null) && (!item.getRole().toLowerCase().contains(filters.getRole().toLowerCase())))
 				validItem = false;
 			
+			// Se il record è valido, lo aggiungiamo alla lista filtrata
 			if (validItem)
 				filteredList.add(item);
 		}
