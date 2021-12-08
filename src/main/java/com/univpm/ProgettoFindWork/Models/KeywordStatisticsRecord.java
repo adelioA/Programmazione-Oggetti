@@ -39,8 +39,8 @@ public class KeywordStatisticsRecord {
 	public double getPercentualeKeyword() {
 		return percentageKeyword;
 	}
-	public void setPercentageKeyword(double percentualeKeyword) {
-		this.percentageKeyword = percentualeKeyword;
+	public void setPercentageKeyword(double percentageKeyword) {
+		this.percentageKeyword = percentageKeyword;
 	}
 	
 	public double getPercentageRemote() {
