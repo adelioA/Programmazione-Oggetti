@@ -20,7 +20,7 @@ Richiede un body con i parametri di filtraggio. Deve essere presente almeno il c
 Bisogna specificare alcune peculiarità dell'endpoint:
 * Implicitamente, vengono scartati tutti i lavori in cui non è specificato il tipo di impiego;
 * In concomitanza col punto sopracitato, l'endpoint può ritornare una lista vuota, se nulla dovesse rispettare i filtri e le condizioni implicite del codice.
-* fra i filtri, vi è la possibilità di non calcolare le statistiche. In tal caso il campo **ststistics** del JSON di risposta sarà **null**.
+* fra i filtri, vi è la possibilità di non calcolare le statistiche. In tal caso il campo **statistics** del JSON di risposta sarà **null**.
 
 >GET /api/suggestions
 
