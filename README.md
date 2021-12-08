@@ -154,6 +154,18 @@ Questo percorso ritorna semplicemente una lista di luoghi, scelti arbitrariament
 ]
 ```
 
+### Class Diagram
+I **diagrammi delle classi** rappresentano, a vari livelli di astrazione, il **contesto** in cui un sistema software deve operare, è utile anche nella progettazione delle parti che lo compongono e delle loro relazioni.
+![Diagramma delle classi](https://github.com/adelioA/Programmazione-Oggetti/blob/master/uml/class-diagram.png)
+
+### Use Case Diagram
+Il **diagramma dei casi d'uso**, tramite l'utilizzo di **attori**, descrive le funzioni o i servizi messi a disposizione dal sistema.
+![Diagramma dei casi d'uso](https://github.com/adelioA/Programmazione-Oggetti/blob/master/uml/use-cases.png)
+
+### Sequence Diagram
+Il **diagramma di sequenza** individua relazioni, in particolare i **messaggi** che intercorrono tra le entità rappresentate.
+![Diagramma di sequenza](https://github.com/adelioA/Programmazione-Oggetti/blob/master/uml/sequence-diagram.png)
+
 ## Software Utilizzati
 * [SpringBoot](https://spring.io/projects/spring-boot) - Framework per applicazioni Java.
 * [Eclipse](https://www.eclipse.org/) - IDE per linguaggio Java.
