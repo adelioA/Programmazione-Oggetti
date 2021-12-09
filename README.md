@@ -30,12 +30,8 @@ Restituisce una breve lista di **location** utilizzabili. Da notare che non spec
 Ricapitolando:
 | **Metodo** | **Richiesta** | **Risposta** |
 | :--- | :---: | ---: |
-| GET	| /					| HTML |
 | GET   | /api/suggestions	| JSON |
 | POST  | /api/search		| JSON |
-
-#### */*
-Restituisce una pagina HTML che permette di utilizzare le API
 
 #### */api/search*
 Un esempio di body:
