@@ -131,6 +131,25 @@ public class FindWorkService {
 		
 		
 		
+		/** Getters */
+		public String getBaseLink() {
+			return baseLink;
+		}
+		public String[] getKeywords() {
+			return keywords;
+		}
+		public Boolean getRemote() {
+			return remote;
+		}
+		public String getEmployment() {
+			return employment;
+		}
+		public String getLocation() {
+			return location;
+		}
+
+
+
 		/**
 		 * @param	location	Il luogo dove cercare l'impiego
 		 * @return	L'oggetto builder
