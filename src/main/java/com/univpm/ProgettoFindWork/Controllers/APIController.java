@@ -109,7 +109,7 @@ public class APIController {
 				if (!filters.isStatisticsIncluded())
 					statistics = null;
 				
-				// Restituiamo i risultati della ricerca
+				// Restituiamo i risultati della ricerca, che verrano convertiti in JSON da SpringBoot
 				responseEntity = new ResponseEntity<>(new SearchResult(records, statistics), HttpStatus.OK);
 			}
 			catch (Unable2ReachAPIException u2rAPI) {
